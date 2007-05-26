@@ -1,0 +1,3 @@
+ctxt/leapsec.c: mk-ctxt conf-leapsec
+	rm -f ctxt/leapsec.c
+	./mk-ctxt ctxt_leapsec < conf-leapsec > ctxt/leapsec.c

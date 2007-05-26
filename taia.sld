@@ -1,0 +1,11 @@
+taia_add.o
+taia_approx.o
+taia_diff.o
+taia_fmtfrac.o
+taia_frac.o
+taia_half.o
+taia_now.o
+taia_pack.o
+taia_sub.o
+taia_tai.o
+taia_unpack.o
