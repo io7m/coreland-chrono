@@ -3,11 +3,12 @@
 
 #include <integer/uint64.h>
 
+#define TAI_PACK 8
+#define TAI_1970 0x400000000000000AULL
+
 struct tai {
   uint64 n;
 };
-
-#define TAI_PACK 8
 
 void tai_now(struct tai *);
 void tai_add(struct tai *, const struct tai *, const struct tai *);

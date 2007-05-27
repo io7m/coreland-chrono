@@ -2,6 +2,7 @@
 #define CALTIME_H
 
 #include "caldate.h"
+#include "tai.h"
 
 struct caltime {
   struct caldate date;

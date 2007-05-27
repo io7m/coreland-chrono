@@ -1,11 +1,11 @@
 #ifndef CALDATE_H
 #define CALDATE_H
 
-/* fmt_ulong + month + day + '-' + '-' */
-#define CALDATE_FMT ((sizeof(unsigned long) * 8) + 2 + 2 + 2)
+/* '-' + fmt_ulong + '-' + month + '-' + day + '-' + '-' */
+#define CALDATE_FMT ((sizeof(long) * 8) + 2 + 2 + 2)
 
 struct caldate {
-  unsigned long year;
+  signed long year;
   unsigned int month;
   unsigned int day;
 };
