@@ -2,8 +2,8 @@
 
 default: all
 
-all: sysdeps.out UNIT_TESTS/t_caldate1 caldate.a ctxt/ctxt.a tai.a \
-	taia.a 
+all: sysdeps.out UNIT_TESTS/t_caldate1 UNIT_TESTS/t_caldate2 \
+	caldate.a ctxt/ctxt.a tai.a taia.a 
 
 sysdeps: sysdeps.out
 sysdeps.out:
@@ -27,17 +27,30 @@ UNIT_TESTS/t_caldate1:\
 	./cc-link UNIT_TESTS/t_caldate1 UNIT_TESTS/t_caldate1.o \
 	UNIT_TESTS/t_assert.o UNIT_TESTS/t_util.o caldate.a 
 UNIT_TESTS/t_caldate1.o:\
-	cc-compile UNIT_TESTS/t_caldate1.c UNIT_TESTS/t_assert.h caldate.h 
+	cc-compile UNIT_TESTS/t_caldate1.c UNIT_TESTS/t_assert.h \
+	UNIT_TESTS/t_util.h caldate.h 
 	./cc-compile UNIT_TESTS/t_caldate1.c
+UNIT_TESTS/t_caldate2:\
+	cc-link UNIT_TESTS/t_caldate2.ld UNIT_TESTS/t_caldate2.o \
+	UNIT_TESTS/t_assert.o UNIT_TESTS/t_util.o caldate.a 
+	./cc-link UNIT_TESTS/t_caldate2 UNIT_TESTS/t_caldate2.o \
+	UNIT_TESTS/t_assert.o UNIT_TESTS/t_util.o caldate.a 
+UNIT_TESTS/t_caldate2.o:\
+	cc-compile UNIT_TESTS/t_caldate2.c UNIT_TESTS/t_assert.h \
+	UNIT_TESTS/t_util.h caldate.h 
+	./cc-compile UNIT_TESTS/t_caldate2.c
 UNIT_TESTS/t_util.o:\
 	cc-compile UNIT_TESTS/t_util.c UNIT_TESTS/t_util.h 
 	./cc-compile UNIT_TESTS/t_util.c
 cald_fmt.o:\
 	cc-compile cald_fmt.c caldate.h 
 	./cc-compile cald_fmt.c
+cald_scan.o:\
+	cc-compile cald_scan.c caldate.h 
+	./cc-compile cald_scan.c
 caldate.a:\
-	cc-slib caldate.sld cald_fmt.o 
-	./cc-slib caldate cald_fmt.o 
+	cc-slib caldate.sld cald_fmt.o cald_scan.o 
+	./cc-slib caldate cald_fmt.o cald_scan.o 
 cc-compile: conf-cc conf-cctype conf-cflags sysdeps.out \
 	flags-integer flags-corelib 
 cc-link: conf-ld conf-ldflags sysdeps.out libs-integer \
@@ -137,12 +150,14 @@ clean-all: sysdeps_clean obj_clean
 clean: obj_clean
 obj_clean: 
 	rm -f UNIT_TESTS/t_assert.o UNIT_TESTS/t_caldate1 \
-	UNIT_TESTS/t_caldate1.o UNIT_TESTS/t_util.o cald_fmt.o caldate.a \
-	conf-cctype conf-systype ctxt/ctxt.a ctxt/leapsec.c ctxt/leapsec.o \
-	mk-ctxt mk-ctxt.o tai.a tai_add.o tai_approx.o tai_diff.o tai_now.o \
-	tai_pack.o tai_sub.o tai_unpack.o taia.a taia_add.o taia_approx.o \
-	taia_diff.o taia_fmtfrac.o taia_frac.o taia_half.o taia_now.o \
-	taia_pack.o taia_sub.o taia_tai.o taia_unpack.o 
+	UNIT_TESTS/t_caldate1.o UNIT_TESTS/t_caldate2 \
+	UNIT_TESTS/t_caldate2.o UNIT_TESTS/t_util.o cald_fmt.o cald_scan.o \
+	caldate.a conf-cctype conf-systype ctxt/ctxt.a ctxt/leapsec.c \
+	ctxt/leapsec.o mk-ctxt mk-ctxt.o tai.a tai_add.o tai_approx.o \
+	tai_diff.o tai_now.o tai_pack.o tai_sub.o tai_unpack.o taia.a \
+	taia_add.o taia_approx.o taia_diff.o taia_fmtfrac.o taia_frac.o \
+	taia_half.o taia_now.o taia_pack.o taia_sub.o taia_tai.o \
+	taia_unpack.o 
 
 regen:
 	cpj-genmk > Makefile.tmp && mv Makefile.tmp Makefile

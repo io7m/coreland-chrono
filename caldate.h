@@ -13,10 +13,4 @@ struct caldate {
 unsigned int caldate_fmt(char *, const struct caldate *);
 unsigned int caldate_scan(const char *, struct caldate *);
 
-void caldate_frommjd(struct caldate *, unsigned long, unsigned int, unsigned int);
-unsigned long caldate_mjd(const struct caldate *);
-
-void caldate_normalize(struct caldate *);
-void caldate_easter(struct caldate *);
-
 #endif
