@@ -10,11 +10,11 @@ unsigned int caldate_scan(const char *str, struct caldate *cd)
   len += pos; str += pos;
   pos = scan_charset(str, "-");
   len += pos; str += pos;
-  pos = scan_uint(str, &cd->month);
+  pos = scan_int(str, &cd->month);
   len += pos; str += pos;
   pos = scan_charset(str, "-");
   len += pos; str += pos;
-  pos = scan_uint(str, &cd->day);
+  pos = scan_int(str, &cd->day);
   len += pos;
 
   return len;

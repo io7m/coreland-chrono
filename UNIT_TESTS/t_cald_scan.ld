@@ -1,4 +1,4 @@
-t_caldate1.o
+t_cald_scan.o
 t_assert.o
 t_util.o
 ../caldate.a
