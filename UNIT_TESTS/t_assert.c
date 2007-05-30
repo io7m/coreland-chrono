@@ -5,6 +5,7 @@
 #include "t_assert.h"
 
 static unsigned long test_num;
+int test_assert_verbose = 1;
 
 static void test_assert_fail(void)
 {
@@ -23,6 +24,7 @@ void test_assert_core(unsigned int cond, const char *fname,
                        test_num, fname, line, text, strerror(errno));
     test_assert_fail();
   }
-  fprintf(stderr, "[%lu] pass: %s: %lu: %s\n", test_num, fname, line, text);
+  if (test_assert_verbose)
+    fprintf(stderr, "[%lu] pass: %s: %lu: %s\n", test_num, fname, line, text);
   test_num++;
 }

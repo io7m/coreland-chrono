@@ -2,8 +2,9 @@
 
 default: all
 
-all: sysdeps.out UNIT_TESTS/t_cald_fmt UNIT_TESTS/t_cald_mjd \
-	UNIT_TESTS/t_cald_scan caldate.a ctxt/ctxt.a tai.a taia.a 
+all: sysdeps.out UNIT_TESTS/t_cald_fmjd UNIT_TESTS/t_cald_fmt \
+	UNIT_TESTS/t_cald_mjd UNIT_TESTS/t_cald_scan caldate.a ctxt/ctxt.a \
+	tai.a taia.a 
 
 sysdeps: sysdeps.out
 sysdeps.out:
@@ -21,6 +22,15 @@ libs-integer: sysdeps.out
 UNIT_TESTS/t_assert.o:\
 	cc-compile UNIT_TESTS/t_assert.c UNIT_TESTS/t_assert.h 
 	./cc-compile UNIT_TESTS/t_assert.c
+UNIT_TESTS/t_cald_fmjd:\
+	cc-link UNIT_TESTS/t_cald_fmjd.ld UNIT_TESTS/t_cald_fmjd.o \
+	UNIT_TESTS/t_assert.o UNIT_TESTS/t_util.o caldate.a 
+	./cc-link UNIT_TESTS/t_cald_fmjd UNIT_TESTS/t_cald_fmjd.o \
+	UNIT_TESTS/t_assert.o UNIT_TESTS/t_util.o caldate.a 
+UNIT_TESTS/t_cald_fmjd.o:\
+	cc-compile UNIT_TESTS/t_cald_fmjd.c UNIT_TESTS/t_assert.h \
+	UNIT_TESTS/t_util.h caldate.h 
+	./cc-compile UNIT_TESTS/t_cald_fmjd.c
 UNIT_TESTS/t_cald_fmt:\
 	cc-link UNIT_TESTS/t_cald_fmt.ld UNIT_TESTS/t_cald_fmt.o \
 	UNIT_TESTS/t_assert.o UNIT_TESTS/t_util.o caldate.a 
@@ -64,8 +74,9 @@ cald_scan.o:\
 	cc-compile cald_scan.c caldate.h 
 	./cc-compile cald_scan.c
 caldate.a:\
-	cc-slib caldate.sld cald_fmt.o cald_scan.o cald_mjd.o 
-	./cc-slib caldate cald_fmt.o cald_scan.o cald_mjd.o 
+	cc-slib caldate.sld cald_fmt.o cald_frommjd.o cald_mjd.o \
+	cald_scan.o 
+	./cc-slib caldate cald_fmt.o cald_frommjd.o cald_mjd.o cald_scan.o 
 cc-compile: conf-cc conf-cctype conf-cflags sysdeps.out \
 	flags-integer flags-corelib 
 cc-link: conf-ld conf-ldflags sysdeps.out libs-integer \
@@ -164,7 +175,8 @@ taia_unpack.o:\
 clean-all: sysdeps_clean obj_clean 
 clean: obj_clean
 obj_clean: 
-	rm -f UNIT_TESTS/t_assert.o UNIT_TESTS/t_cald_fmt \
+	rm -f UNIT_TESTS/t_assert.o UNIT_TESTS/t_cald_fmjd \
+	UNIT_TESTS/t_cald_fmjd.o UNIT_TESTS/t_cald_fmt \
 	UNIT_TESTS/t_cald_fmt.o UNIT_TESTS/t_cald_mjd \
 	UNIT_TESTS/t_cald_mjd.o UNIT_TESTS/t_cald_scan \
 	UNIT_TESTS/t_cald_scan.o UNIT_TESTS/t_util.o cald_fmt.o \

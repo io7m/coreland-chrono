@@ -6,4 +6,6 @@
 
 void test_assert_core(unsigned int, const char *, unsigned long, const char *);
 
+extern int test_assert_verbose;
+
 #endif
