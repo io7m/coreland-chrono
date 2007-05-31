@@ -6,6 +6,11 @@ unsigned int caldate_scan(const char *str, struct caldate *cd)
   unsigned int len = 0;
   unsigned int pos = 0;
 
+  if (*str == '+') {
+    ++str;
+    ++len;
+  }
+
   pos = scan_long(str, &cd->year);
   len += pos; str += pos;
 

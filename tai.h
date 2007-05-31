@@ -5,6 +5,7 @@
 
 #define TAI_PACK 8
 #define TAI_1970 0x400000000000000AULL
+#define TAI_SECS_PER_DAY 86400
 
 struct tai {
   uint64 n;

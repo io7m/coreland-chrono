@@ -4,8 +4,8 @@ default: all
 
 all: sysdeps.out UNIT_TESTS/t_cald_fmjd UNIT_TESTS/t_cald_fmt \
 	UNIT_TESTS/t_cald_mjd UNIT_TESTS/t_cald_scan UNIT_TESTS/t_calt_fmt \
-	UNIT_TESTS/t_calt_scan caldate.a caltime.a ctxt/ctxt.a leapsecs.a \
-	tai.a taia.a 
+	UNIT_TESTS/t_calt_scan caldate.a caltime.a ctxt/ctxt.a leapsecs \
+	leapsecs.a tai.a taia.a 
 
 sysdeps: sysdeps.out
 sysdeps.out:
@@ -142,11 +142,17 @@ leaps_init.o:\
 leaps_read.o:\
 	cc-compile leaps_read.c leapsecs.h 
 	./cc-compile leaps_read.c
+leapsecs:\
+	cc-link leapsecs.ld leapsecs.o caldate.a tai.a 
+	./cc-link leapsecs leapsecs.o caldate.a tai.a 
 leapsecs.a:\
 	cc-slib leapsecs.sld leaps_data.o leaps_free.o leaps_init.o \
 	leaps_read.o 
 	./cc-slib leapsecs leaps_data.o leaps_free.o leaps_init.o \
 	leaps_read.o 
+leapsecs.o:\
+	cc-compile leapsecs.c caldate.h tai.h 
+	./cc-compile leapsecs.c
 mk-cctype: conf-cc conf-systype 
 mk-ctxt.o:\
 	cc-compile mk-ctxt.c
@@ -232,9 +238,10 @@ obj_clean:
 	UNIT_TESTS/t_calt_fmt.o UNIT_TESTS/t_calt_scan \
 	UNIT_TESTS/t_calt_scan.o UNIT_TESTS/t_util.o cald_fmt.o \
 	cald_frommjd.o cald_mjd.o cald_norm.o cald_scan.o caldate.a \
-	calt_fmt.o calt_scan.o caltime.a ctxt/ctxt.a ctxt/leapsec.c \
-	ctxt/leapsec.o leaps_data.o leaps_free.o leaps_init.o leaps_read.o \
-	leapsecs.a tai.a tai_add.o tai_approx.o tai_diff.o tai_now.o \
+	calt_fmt.o calt_scan.o caltime.a conf-cctype conf-systype \
+	ctxt/ctxt.a ctxt/leapsec.c ctxt/leapsec.o leaps_data.o leaps_free.o \
+	leaps_init.o leaps_read.o leapsecs leapsecs.a leapsecs.o mk-ctxt \
+	mk-ctxt.o tai.a tai_add.o tai_approx.o tai_diff.o tai_now.o \
 	tai_pack.o tai_sub.o tai_unpack.o taia.a taia_add.o taia_approx.o \
 	taia_diff.o taia_fmtfrac.o taia_frac.o taia_half.o taia_now.o \
 	taia_pack.o taia_sub.o taia_tai.o taia_unpack.o 
