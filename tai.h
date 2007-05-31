@@ -4,7 +4,7 @@
 #include <integer/uint64.h>
 
 #define TAI_PACK 8
-#define TAI_1970 0x400000000000000AULL
+#define TAI_EPOCH 0x400000000000000AULL
 #define TAI_SECS_PER_DAY 86400ULL
 
 struct tai {

@@ -3,5 +3,5 @@
 
 void tai_now(struct tai *t)
 {
-  t->n = TAI_1970 + (uint64) time((time_t *) 0);
+  t->n = TAI_EPOCH + (uint64) time((time_t *) 0);
 }
