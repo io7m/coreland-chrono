@@ -4,7 +4,8 @@ default: all
 
 all: sysdeps.out UNIT_TESTS/t_cald_fmjd UNIT_TESTS/t_cald_fmt \
 	UNIT_TESTS/t_cald_mjd UNIT_TESTS/t_cald_scan UNIT_TESTS/t_calt_fmt \
-	caldate.a caltime.a ctxt/ctxt.a tai.a taia.a 
+	UNIT_TESTS/t_calt_scan caldate.a caltime.a ctxt/ctxt.a tai.a taia.a \
+	
 
 sysdeps: sysdeps.out
 sysdeps.out:
@@ -67,6 +68,15 @@ UNIT_TESTS/t_calt_fmt.o:\
 	cc-compile UNIT_TESTS/t_calt_fmt.c UNIT_TESTS/t_assert.h \
 	UNIT_TESTS/t_util.h caltime.h 
 	./cc-compile UNIT_TESTS/t_calt_fmt.c
+UNIT_TESTS/t_calt_scan:\
+	cc-link UNIT_TESTS/t_calt_scan.ld UNIT_TESTS/t_calt_scan.o \
+	UNIT_TESTS/t_assert.o UNIT_TESTS/t_util.o caltime.a caldate.a 
+	./cc-link UNIT_TESTS/t_calt_scan UNIT_TESTS/t_calt_scan.o \
+	UNIT_TESTS/t_assert.o UNIT_TESTS/t_util.o caltime.a caldate.a 
+UNIT_TESTS/t_calt_scan.o:\
+	cc-compile UNIT_TESTS/t_calt_scan.c UNIT_TESTS/t_assert.h \
+	UNIT_TESTS/t_util.h caltime.h 
+	./cc-compile UNIT_TESTS/t_calt_scan.c
 UNIT_TESTS/t_util.o:\
 	cc-compile UNIT_TESTS/t_util.c UNIT_TESTS/t_util.h 
 	./cc-compile UNIT_TESTS/t_util.c
@@ -202,7 +212,8 @@ obj_clean:
 	UNIT_TESTS/t_cald_fmt.o UNIT_TESTS/t_cald_mjd \
 	UNIT_TESTS/t_cald_mjd.o UNIT_TESTS/t_cald_scan \
 	UNIT_TESTS/t_cald_scan.o UNIT_TESTS/t_calt_fmt \
-	UNIT_TESTS/t_calt_fmt.o UNIT_TESTS/t_util.o cald_fmt.o \
+	UNIT_TESTS/t_calt_fmt.o UNIT_TESTS/t_calt_scan \
+	UNIT_TESTS/t_calt_scan.o UNIT_TESTS/t_util.o cald_fmt.o \
 	cald_frommjd.o cald_mjd.o cald_norm.o cald_scan.o caldate.a \
 	calt_fmt.o calt_scan.o caltime.a conf-cctype conf-systype \
 	ctxt/ctxt.a ctxt/leapsec.c ctxt/leapsec.o mk-ctxt mk-ctxt.o tai.a \
