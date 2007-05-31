@@ -3,8 +3,8 @@
 default: all
 
 all: sysdeps.out UNIT_TESTS/t_cald_fmjd UNIT_TESTS/t_cald_fmt \
-	UNIT_TESTS/t_cald_mjd UNIT_TESTS/t_cald_scan caldate.a ctxt/ctxt.a \
-	tai.a taia.a 
+	UNIT_TESTS/t_cald_mjd UNIT_TESTS/t_cald_scan UNIT_TESTS/t_calt_fmt \
+	caldate.a caltime.a ctxt/ctxt.a tai.a taia.a 
 
 sysdeps: sysdeps.out
 sysdeps.out:
@@ -58,6 +58,15 @@ UNIT_TESTS/t_cald_scan.o:\
 	cc-compile UNIT_TESTS/t_cald_scan.c UNIT_TESTS/t_assert.h \
 	UNIT_TESTS/t_util.h caldate.h 
 	./cc-compile UNIT_TESTS/t_cald_scan.c
+UNIT_TESTS/t_calt_fmt:\
+	cc-link UNIT_TESTS/t_calt_fmt.ld UNIT_TESTS/t_calt_fmt.o \
+	UNIT_TESTS/t_assert.o UNIT_TESTS/t_util.o caltime.a caldate.a 
+	./cc-link UNIT_TESTS/t_calt_fmt UNIT_TESTS/t_calt_fmt.o \
+	UNIT_TESTS/t_assert.o UNIT_TESTS/t_util.o caltime.a caldate.a 
+UNIT_TESTS/t_calt_fmt.o:\
+	cc-compile UNIT_TESTS/t_calt_fmt.c UNIT_TESTS/t_assert.h \
+	UNIT_TESTS/t_util.h caltime.h 
+	./cc-compile UNIT_TESTS/t_calt_fmt.c
 UNIT_TESTS/t_util.o:\
 	cc-compile UNIT_TESTS/t_util.c UNIT_TESTS/t_util.h 
 	./cc-compile UNIT_TESTS/t_util.c
@@ -70,13 +79,26 @@ cald_frommjd.o:\
 cald_mjd.o:\
 	cc-compile cald_mjd.c caldate.h 
 	./cc-compile cald_mjd.c
+cald_norm.o:\
+	cc-compile cald_norm.c caldate.h 
+	./cc-compile cald_norm.c
 cald_scan.o:\
 	cc-compile cald_scan.c caldate.h 
 	./cc-compile cald_scan.c
 caldate.a:\
 	cc-slib caldate.sld cald_fmt.o cald_frommjd.o cald_mjd.o \
+	cald_norm.o cald_scan.o 
+	./cc-slib caldate cald_fmt.o cald_frommjd.o cald_mjd.o cald_norm.o \
 	cald_scan.o 
-	./cc-slib caldate cald_fmt.o cald_frommjd.o cald_mjd.o cald_scan.o 
+calt_fmt.o:\
+	cc-compile calt_fmt.c caldate.h caltime.h 
+	./cc-compile calt_fmt.c
+calt_scan.o:\
+	cc-compile calt_scan.c caldate.h caltime.h 
+	./cc-compile calt_scan.c
+caltime.a:\
+	cc-slib caltime.sld calt_fmt.o calt_scan.o 
+	./cc-slib caltime calt_fmt.o calt_scan.o 
 cc-compile: conf-cc conf-cctype conf-cflags sysdeps.out \
 	flags-integer flags-corelib 
 cc-link: conf-ld conf-ldflags sysdeps.out libs-integer \
@@ -172,21 +194,39 @@ taia_tai.o:\
 taia_unpack.o:\
 	cc-compile taia_unpack.c taia.h tai.h 
 	./cc-compile taia_unpack.c
-clean-all: sysdeps_clean obj_clean 
+clean-all: sysdeps_clean tests_clean obj_clean 
 clean: obj_clean
 obj_clean: 
 	rm -f UNIT_TESTS/t_assert.o UNIT_TESTS/t_cald_fmjd \
 	UNIT_TESTS/t_cald_fmjd.o UNIT_TESTS/t_cald_fmt \
 	UNIT_TESTS/t_cald_fmt.o UNIT_TESTS/t_cald_mjd \
 	UNIT_TESTS/t_cald_mjd.o UNIT_TESTS/t_cald_scan \
-	UNIT_TESTS/t_cald_scan.o UNIT_TESTS/t_util.o cald_fmt.o \
-	cald_frommjd.o cald_mjd.o cald_scan.o caldate.a ctxt/ctxt.a \
-	ctxt/leapsec.c ctxt/leapsec.o tai.a tai_add.o tai_approx.o \
-	tai_diff.o tai_now.o tai_pack.o tai_sub.o tai_unpack.o taia.a \
-	taia_add.o taia_approx.o taia_diff.o taia_fmtfrac.o taia_frac.o \
-	taia_half.o taia_now.o taia_pack.o taia_sub.o taia_tai.o \
-	taia_unpack.o 
+	UNIT_TESTS/t_cald_scan.o UNIT_TESTS/t_calt_fmt \
+	UNIT_TESTS/t_calt_fmt.o UNIT_TESTS/t_util.o cald_fmt.o \
+	cald_frommjd.o cald_mjd.o cald_norm.o cald_scan.o caldate.a \
+	calt_fmt.o calt_scan.o caltime.a conf-cctype conf-systype \
+	ctxt/ctxt.a ctxt/leapsec.c ctxt/leapsec.o mk-ctxt mk-ctxt.o tai.a \
+	tai_add.o tai_approx.o tai_diff.o tai_now.o tai_pack.o tai_sub.o \
+	tai_unpack.o taia.a taia_add.o taia_approx.o taia_diff.o \
+	taia_fmtfrac.o taia_frac.o taia_half.o taia_now.o taia_pack.o \
+	taia_sub.o taia_tai.o taia_unpack.o 
 
+deinstall: deinstaller inst-check inst-copy inst-dir inst-link
+	./deinstaller
+deinstall-dryrun: deinstaller inst-check inst-copy inst-dir inst-link
+	./deinstaller dryrun
+install: installer inst-check inst-copy inst-dir inst-link postinstall
+	./installer
+	./postinstall
+
+install-dryrun: installer inst-check inst-copy inst-dir inst-link
+	./installer dryrun
+install-check: instchk inst-check
+	./instchk
+tests:
+	(cd UNIT_TESTS && make tests)
+tests_clean:
+	(cd UNIT_TESTS && make clean)
 regen:
 	cpj-genmk > Makefile.tmp && mv Makefile.tmp Makefile
 

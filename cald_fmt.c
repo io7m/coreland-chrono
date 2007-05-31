@@ -10,11 +10,11 @@ unsigned int caldate_fmt(char *str, const struct caldate *cd)
   len += pos; if (str) str += pos;
   pos = fmt_str(str, "-");
   len += pos; if (str) str += pos;
-  pos = fmt_pad_int(str, cd->month, 2, '0', fmt_int);
+  pos = fmt_pad_int(str, cd->month, (cd->month < 0) ? 3 : 2, '0', fmt_int, FMT_PAD_SIGN_PRE);
   len += pos; if (str) str += pos;
   pos = fmt_str(str, "-");
   len += pos; if (str) str += pos;
-  pos = fmt_pad_int(str, cd->day, 2, '0', fmt_int);
+  pos = fmt_pad_int(str, cd->day, (cd->day < 0) ? 3 : 2, '0', fmt_int, FMT_PAD_SIGN_PRE);
   len += pos;
 
   return len;

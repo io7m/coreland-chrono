@@ -15,5 +15,6 @@ unsigned int caldate_scan(const char *, struct caldate *);
 
 long caldate_mjd(const struct caldate *);
 void caldate_frommjd(struct caldate *, long, int *, int *);
+void caldate_normalize(struct caldate *);
 
 #endif
