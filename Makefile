@@ -5,7 +5,7 @@ default: all
 all: sysdeps.out UNIT_TESTS/t_cald_fmjd UNIT_TESTS/t_cald_fmt \
 	UNIT_TESTS/t_cald_mjd UNIT_TESTS/t_cald_scan UNIT_TESTS/t_calt_fmt \
 	UNIT_TESTS/t_calt_scan caldate.a caltime.a ctxt/ctxt.a leapsecs \
-	leapsecs.a tai.a taia.a 
+	leapsecs.a tai.a tai64 tai64n tai64na taia.a 
 
 sysdeps: sysdeps.out
 sysdeps.out:
@@ -162,10 +162,28 @@ mk-ctxt:\
 	./cc-link mk-ctxt mk-ctxt.o
 mk-systype: conf-cc 
 tai.a:\
-	cc-slib tai.sld tai_add.o tai_approx.o tai_diff.o tai_now.o \
-	tai_pack.o tai_sub.o tai_unpack.o 
-	./cc-slib tai tai_add.o tai_approx.o tai_diff.o tai_now.o \
-	tai_pack.o tai_sub.o tai_unpack.o 
+	cc-slib tai.sld tai_add.o tai_approx.o tai_diff.o tai_label.o \
+	tai_now.o tai_pack.o tai_sub.o tai_unix.o tai_unpack.o 
+	./cc-slib tai tai_add.o tai_approx.o tai_diff.o tai_label.o \
+	tai_now.o tai_pack.o tai_sub.o tai_unix.o tai_unpack.o 
+tai64:\
+	cc-link tai64.ld tai64.o tai.a 
+	./cc-link tai64 tai64.o tai.a 
+tai64.o:\
+	cc-compile tai64.c tai.h 
+	./cc-compile tai64.c
+tai64n:\
+	cc-link tai64n.ld tai64n.o taia.a tai.a 
+	./cc-link tai64n tai64n.o taia.a tai.a 
+tai64n.o:\
+	cc-compile tai64n.c taia.h 
+	./cc-compile tai64n.c
+tai64na:\
+	cc-link tai64na.ld tai64na.o taia.a tai.a 
+	./cc-link tai64na tai64na.o taia.a tai.a 
+tai64na.o:\
+	cc-compile tai64na.c taia.h 
+	./cc-compile tai64na.c
 tai_add.o:\
 	cc-compile tai_add.c tai.h 
 	./cc-compile tai_add.c
@@ -175,6 +193,9 @@ tai_approx.o:\
 tai_diff.o:\
 	cc-compile tai_diff.c tai.h 
 	./cc-compile tai_diff.c
+tai_label.o:\
+	cc-compile tai_label.c tai.h 
+	./cc-compile tai_label.c
 tai_now.o:\
 	cc-compile tai_now.c tai.h 
 	./cc-compile tai_now.c
@@ -184,16 +205,19 @@ tai_pack.o:\
 tai_sub.o:\
 	cc-compile tai_sub.c tai.h 
 	./cc-compile tai_sub.c
+tai_unix.o:\
+	cc-compile tai_unix.c tai.h 
+	./cc-compile tai_unix.c
 tai_unpack.o:\
 	cc-compile tai_unpack.c tai.h 
 	./cc-compile tai_unpack.c
 taia.a:\
 	cc-slib taia.sld taia_add.o taia_approx.o taia_diff.o \
-	taia_fmtfrac.o taia_frac.o taia_half.o taia_now.o taia_pack.o \
-	taia_sub.o taia_tai.o taia_unpack.o 
+	taia_fmtfrac.o taia_frac.o taia_half.o taia_label.o taia_now.o \
+	taia_pack.o taia_sub.o taia_tai.o taia_unpack.o 
 	./cc-slib taia taia_add.o taia_approx.o taia_diff.o taia_fmtfrac.o \
-	taia_frac.o taia_half.o taia_now.o taia_pack.o taia_sub.o taia_tai.o \
-	taia_unpack.o 
+	taia_frac.o taia_half.o taia_label.o taia_now.o taia_pack.o \
+	taia_sub.o taia_tai.o taia_unpack.o 
 taia_add.o:\
 	cc-compile taia_add.c taia.h tai.h 
 	./cc-compile taia_add.c
@@ -212,6 +236,9 @@ taia_frac.o:\
 taia_half.o:\
 	cc-compile taia_half.c taia.h tai.h 
 	./cc-compile taia_half.c
+taia_label.o:\
+	cc-compile taia_label.c taia.h tai.h 
+	./cc-compile taia_label.c
 taia_now.o:\
 	cc-compile taia_now.c taia.h tai.h 
 	./cc-compile taia_now.c
@@ -241,10 +268,12 @@ obj_clean:
 	calt_fmt.o calt_scan.o caltime.a conf-cctype conf-systype \
 	ctxt/ctxt.a ctxt/leapsec.c ctxt/leapsec.o leaps_data.o leaps_free.o \
 	leaps_init.o leaps_read.o leapsecs leapsecs.a leapsecs.o mk-ctxt \
-	mk-ctxt.o tai.a tai_add.o tai_approx.o tai_diff.o tai_now.o \
-	tai_pack.o tai_sub.o tai_unpack.o taia.a taia_add.o taia_approx.o \
-	taia_diff.o taia_fmtfrac.o taia_frac.o taia_half.o taia_now.o \
-	taia_pack.o taia_sub.o taia_tai.o taia_unpack.o 
+	mk-ctxt.o tai.a tai64 tai64.o tai64n tai64n.o tai64na tai64na.o \
+	tai_add.o tai_approx.o tai_diff.o tai_label.o tai_now.o tai_pack.o \
+	tai_sub.o tai_unix.o tai_unpack.o taia.a taia_add.o taia_approx.o \
+	taia_diff.o taia_fmtfrac.o taia_frac.o taia_half.o taia_label.o \
+	taia_now.o taia_pack.o taia_sub.o 
+	rm -f taia_tai.o taia_unpack.o 
 
 deinstall: deinstaller inst-check inst-copy inst-dir inst-link
 	./deinstaller

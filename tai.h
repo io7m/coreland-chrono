@@ -6,6 +6,7 @@
 #define TAI_PACK 8
 #define TAI_EPOCH 0x400000000000000AULL
 #define TAI_SECS_PER_DAY 86400ULL
+#define TAI_TAI64 17
 
 struct tai {
   uint64 n;
@@ -23,5 +24,9 @@ int tai_diff(const struct tai *, const struct tai *);
 #define tai_less(t,u) (tai_diff((t),(u)) < 0)
 #define tai_more(t,u) (tai_diff((t),(u)) > 0)
 #define tai_equal(t,u) (tai_diff((t),(u)) == 0)
+
+void tai_tai64(char *, const struct tai *);
+
+void tai_unix(struct tai *, uint64);
 
 #endif

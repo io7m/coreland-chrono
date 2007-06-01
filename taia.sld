@@ -4,6 +4,7 @@ taia_diff.o
 taia_fmtfrac.o
 taia_frac.o
 taia_half.o
+taia_label.o
 taia_now.o
 taia_pack.o
 taia_sub.o
