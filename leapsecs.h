@@ -6,7 +6,9 @@
 int leapsecs_init(void);
 int leapsecs_read(void);
 int leapsecs_sub(struct tai *);
-int leapsecs_add(struct tai *, int);
+void leapsecs_add(struct tai *, int);
 void leapsecs_free(void);
+
+extern const char *leapsecs_path;
 
 #endif

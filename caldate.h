@@ -1,6 +1,8 @@
 #ifndef CALDATE_H
 #define CALDATE_H
 
+#include <integer/int64.h>
+
 /* '-' + fmt_ulong + '-' + month + '-' + day + '-' + '-' */
 #define CALDATE_FMT ((sizeof(long) * 8) + 2 + 2 + 2)
 
@@ -13,8 +15,8 @@ struct caldate {
 unsigned int caldate_fmt(char *, const struct caldate *);
 unsigned int caldate_scan(const char *, struct caldate *);
 
-long caldate_mjd(const struct caldate *);
-void caldate_frommjd(struct caldate *, long, int *, int *);
+int64 caldate_mjd(const struct caldate *);
+void caldate_frommjd(struct caldate *, int64, int *, int *);
 void caldate_normalize(struct caldate *);
 
 #endif

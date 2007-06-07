@@ -1,10 +1,10 @@
 #include "caldate.h"
 
-long caldate_mjd(const struct caldate *cd)
+int64 caldate_mjd(const struct caldate *cd)
 {
-  long y = cd->year;
-  long m = cd->month - 1;
-  long d = cd->day - 678882;
+  int64 y = cd->year;
+  int64 m = cd->month - 1;
+  int64 d = cd->day - 678882;
 
   d += 146097 * (y / 400);
   y %= 400;

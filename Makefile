@@ -4,9 +4,10 @@ default: all
 
 all: sysdeps.out UNIT_TESTS/t_cald_fmjd UNIT_TESTS/t_cald_fmt \
 	UNIT_TESTS/t_cald_mjd UNIT_TESTS/t_cald_scan UNIT_TESTS/t_calt_fmt \
-	UNIT_TESTS/t_calt_scan caldate.a caltime.a chrono-conf ctxt/ctxt.a \
-	deinstaller inst-check inst-copy inst-dir inst-link installer \
-	instchk leapsecs leapsecs.a tai.a tai64 tai64n tai64na taia.a 
+	UNIT_TESTS/t_calt_scan UNIT_TESTS/t_leaps1 caldate.a caltime.a \
+	chrono-conf ctxt/ctxt.a deinstaller inst-check inst-copy inst-dir \
+	inst-link installer instchk leapsecs leapsecs.a tai.a tai64 tai64n \
+	tai64na taia.a 
 
 sysdeps: sysdeps.out
 sysdeps.out:
@@ -78,6 +79,15 @@ UNIT_TESTS/t_calt_scan.o:\
 	cc-compile UNIT_TESTS/t_calt_scan.c UNIT_TESTS/t_assert.h \
 	UNIT_TESTS/t_util.h caltime.h 
 	./cc-compile UNIT_TESTS/t_calt_scan.c
+UNIT_TESTS/t_leaps1:\
+	cc-link UNIT_TESTS/t_leaps1.ld UNIT_TESTS/t_leaps1.o \
+	UNIT_TESTS/t_assert.o leapsecs.a tai.a 
+	./cc-link UNIT_TESTS/t_leaps1 UNIT_TESTS/t_leaps1.o \
+	UNIT_TESTS/t_assert.o leapsecs.a tai.a 
+UNIT_TESTS/t_leaps1.o:\
+	cc-compile UNIT_TESTS/t_leaps1.c UNIT_TESTS/t_assert.h leapsecs.h \
+	tai.h 
+	./cc-compile UNIT_TESTS/t_leaps1.c
 UNIT_TESTS/t_util.o:\
 	cc-compile UNIT_TESTS/t_util.c UNIT_TESTS/t_util.h 
 	./cc-compile UNIT_TESTS/t_util.c
@@ -107,9 +117,15 @@ calt_fmt.o:\
 calt_scan.o:\
 	cc-compile calt_scan.c caldate.h caltime.h 
 	./cc-compile calt_scan.c
+calt_tai.o:\
+	cc-compile calt_tai.c tai.h leapsecs.h caldate.h caltime.h 
+	./cc-compile calt_tai.c
+calt_utc.o:\
+	cc-compile calt_utc.c tai.h leapsecs.h caldate.h caltime.h 
+	./cc-compile calt_utc.c
 caltime.a:\
-	cc-slib caltime.sld calt_fmt.o calt_scan.o 
-	./cc-slib caltime calt_fmt.o calt_scan.o 
+	cc-slib caltime.sld calt_fmt.o calt_scan.o calt_utc.o 
+	./cc-slib caltime calt_fmt.o calt_scan.o calt_utc.o 
 cc-compile: conf-cc conf-cctype conf-cflags sysdeps.out \
 	flags-integer flags-corelib 
 cc-link: conf-ld conf-ldflags sysdeps.out libs-integer \
@@ -241,6 +257,9 @@ instchk.o:\
 insthier.o:\
 	cc-compile insthier.c ctxt.h install.h 
 	./cc-compile insthier.c
+leaps_add.o:\
+	cc-compile leaps_add.c leapsecs.h tai.h 
+	./cc-compile leaps_add.c
 leaps_data.o:\
 	cc-compile leaps_data.c ctxt.h leapsecs.h 
 	./cc-compile leaps_data.c
@@ -253,14 +272,17 @@ leaps_init.o:\
 leaps_read.o:\
 	cc-compile leaps_read.c leapsecs.h 
 	./cc-compile leaps_read.c
+leaps_sub.o:\
+	cc-compile leaps_sub.c leapsecs.h tai.h 
+	./cc-compile leaps_sub.c
 leapsecs:\
 	cc-link leapsecs.ld leapsecs.o caldate.a tai.a 
 	./cc-link leapsecs leapsecs.o caldate.a tai.a 
 leapsecs.a:\
-	cc-slib leapsecs.sld leaps_data.o leaps_free.o leaps_init.o \
-	leaps_read.o 
-	./cc-slib leapsecs leaps_data.o leaps_free.o leaps_init.o \
-	leaps_read.o 
+	cc-slib leapsecs.sld leaps_add.o leaps_data.o leaps_free.o \
+	leaps_init.o leaps_read.o leaps_sub.o ctxt/leapsec.o 
+	./cc-slib leapsecs leaps_add.o leaps_data.o leaps_free.o \
+	leaps_init.o leaps_read.o leaps_sub.o ctxt/leapsec.o 
 leapsecs.o:\
 	cc-compile leapsecs.c caldate.h tai.h 
 	./cc-compile leapsecs.c
@@ -274,10 +296,12 @@ mk-ctxt:\
 mk-sosuffix: conf-systype 
 mk-systype: conf-cc 
 tai.a:\
-	cc-slib tai.sld tai_add.o tai_approx.o tai_diff.o tai_label.o \
-	tai_now.o tai_pack.o tai_sub.o tai_unix.o tai_unpack.o 
-	./cc-slib tai tai_add.o tai_approx.o tai_diff.o tai_label.o \
-	tai_now.o tai_pack.o tai_sub.o tai_unix.o tai_unpack.o 
+	cc-slib tai.sld tai_add.o tai_approx.o tai_diff.o tai_get.o \
+	tai_label.o tai_now.o tai_pack.o tai_set.o tai_sub.o tai_unix.o \
+	tai_unpack.o 
+	./cc-slib tai tai_add.o tai_approx.o tai_diff.o tai_get.o \
+	tai_label.o tai_now.o tai_pack.o tai_set.o tai_sub.o tai_unix.o \
+	tai_unpack.o 
 tai64:\
 	cc-link tai64.ld tai64.o tai.a 
 	./cc-link tai64 tai64.o tai.a 
@@ -305,6 +329,9 @@ tai_approx.o:\
 tai_diff.o:\
 	cc-compile tai_diff.c tai.h 
 	./cc-compile tai_diff.c
+tai_get.o:\
+	cc-compile tai_get.c tai.h 
+	./cc-compile tai_get.c
 tai_label.o:\
 	cc-compile tai_label.c tai.h 
 	./cc-compile tai_label.c
@@ -314,6 +341,9 @@ tai_now.o:\
 tai_pack.o:\
 	cc-compile tai_pack.c tai.h 
 	./cc-compile tai_pack.c
+tai_set.o:\
+	cc-compile tai_set.c tai.h 
+	./cc-compile tai_set.c
 tai_sub.o:\
 	cc-compile tai_sub.c tai.h 
 	./cc-compile tai_sub.c
@@ -375,23 +405,25 @@ obj_clean:
 	UNIT_TESTS/t_cald_mjd.o UNIT_TESTS/t_cald_scan \
 	UNIT_TESTS/t_cald_scan.o UNIT_TESTS/t_calt_fmt \
 	UNIT_TESTS/t_calt_fmt.o UNIT_TESTS/t_calt_scan \
-	UNIT_TESTS/t_calt_scan.o UNIT_TESTS/t_util.o cald_fmt.o \
-	cald_frommjd.o cald_mjd.o cald_norm.o cald_scan.o caldate.a \
-	calt_fmt.o calt_scan.o caltime.a chrono-conf chrono-conf.o \
-	conf-cctype conf-systype ctxt/bindir.c ctxt/bindir.o ctxt/ctxt.a \
-	ctxt/dlibdir.c ctxt/dlibdir.o ctxt/incdir.c ctxt/incdir.o \
-	ctxt/leapsec.c ctxt/leapsec.o ctxt/repos.c ctxt/repos.o \
-	ctxt/slibdir.c ctxt/slibdir.o ctxt/version.c ctxt/version.o \
-	deinstaller deinstaller.o inst-check inst-check.o inst-copy \
-	inst-copy.o inst-dir inst-dir.o inst-link inst-link.o install_core.o \
-	install_error.o installer installer.o instchk instchk.o insthier.o \
-	leaps_data.o leaps_free.o leaps_init.o leaps_read.o leapsecs 
-	rm -f leapsecs.a leapsecs.o mk-ctxt mk-ctxt.o tai.a tai64 tai64.o \
-	tai64n tai64n.o tai64na tai64na.o tai_add.o tai_approx.o tai_diff.o \
-	tai_label.o tai_now.o tai_pack.o tai_sub.o tai_unix.o tai_unpack.o \
-	taia.a taia_add.o taia_approx.o taia_diff.o taia_fmtfrac.o \
-	taia_frac.o taia_half.o taia_label.o taia_now.o taia_pack.o \
-	taia_sub.o taia_tai.o taia_unpack.o 
+	UNIT_TESTS/t_calt_scan.o UNIT_TESTS/t_leaps1 UNIT_TESTS/t_leaps1.o \
+	UNIT_TESTS/t_util.o cald_fmt.o cald_frommjd.o cald_mjd.o cald_norm.o \
+	cald_scan.o caldate.a calt_fmt.o calt_scan.o calt_tai.o calt_utc.o \
+	caltime.a chrono-conf chrono-conf.o conf-cctype conf-systype \
+	ctxt/bindir.c ctxt/bindir.o ctxt/ctxt.a ctxt/dlibdir.c \
+	ctxt/dlibdir.o ctxt/incdir.c ctxt/incdir.o ctxt/leapsec.c \
+	ctxt/leapsec.o ctxt/repos.c ctxt/repos.o ctxt/slibdir.c \
+	ctxt/slibdir.o ctxt/version.c ctxt/version.o deinstaller \
+	deinstaller.o inst-check inst-check.o inst-copy inst-copy.o inst-dir \
+	inst-dir.o inst-link inst-link.o install_core.o install_error.o \
+	installer installer.o instchk instchk.o insthier.o leaps_add.o 
+	rm -f leaps_data.o leaps_free.o leaps_init.o leaps_read.o \
+	leaps_sub.o leapsecs leapsecs.a leapsecs.o mk-ctxt mk-ctxt.o tai.a \
+	tai64 tai64.o tai64n tai64n.o tai64na tai64na.o tai_add.o \
+	tai_approx.o tai_diff.o tai_get.o tai_label.o tai_now.o tai_pack.o \
+	tai_set.o tai_sub.o tai_unix.o tai_unpack.o taia.a taia_add.o \
+	taia_approx.o taia_diff.o taia_fmtfrac.o taia_frac.o taia_half.o \
+	taia_label.o taia_now.o taia_pack.o taia_sub.o taia_tai.o \
+	taia_unpack.o 
 
 deinstall: deinstaller inst-check inst-copy inst-dir inst-link
 	./deinstaller
