@@ -1,4 +1,4 @@
-libs-integer
+libs-integer-S
 libs-integer-C
-libs-corelib
+libs-corelib-S
 libs-corelib-C
