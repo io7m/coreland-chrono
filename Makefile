@@ -557,21 +557,22 @@ obj_clean:
 	UNIT_TESTS/t_calt_scan.o UNIT_TESTS/t_leaps1 UNIT_TESTS/t_leaps1.o \
 	UNIT_TESTS/t_util.o cald_fmt.o cald_frommjd.o cald_mjd.o cald_norm.o \
 	cald_scan.o caldate.a calt_fmt.o calt_scan.o calt_tai.o calt_utc.o \
-	caltime.a chrono-conf chrono-conf.o ctxt/bindir.c ctxt/bindir.o \
-	ctxt/ctxt.a ctxt/dlibdir.c ctxt/dlibdir.o ctxt/incdir.c \
-	ctxt/incdir.o ctxt/leapsec.c ctxt/leapsec.o ctxt/repos.c \
-	ctxt/repos.o ctxt/slibdir.c ctxt/slibdir.o ctxt/version.c \
-	ctxt/version.o deinstaller deinstaller.o inst-check inst-check.o \
-	inst-copy inst-copy.o inst-dir inst-dir.o inst-link inst-link.o \
-	install_core.o install_error.o installer installer.o instchk \
-	instchk.o insthier.o leaps_add.o leaps_data.o leaps_free.o 
-	rm -f leaps_init.o leaps_read.o leaps_sub.o leapsecs leapsecs.a \
-	leapsecs.o tai.a tai64 tai64.o tai64n tai64n.o tai64na tai64na.o \
-	tai_add.o tai_approx.o tai_diff.o tai_get.o tai_label.o tai_now.o \
-	tai_pack.o tai_set.o tai_sub.o tai_unix.o tai_unpack.o taia.a \
-	taia_add.o taia_approx.o taia_diff.o taia_fmtfrac.o taia_frac.o \
-	taia_half.o taia_label.o taia_now.o taia_pack.o taia_sub.o \
-	taia_tai.o taia_unpack.o 
+	caltime.a chrono-conf chrono-conf.o conf-cctype conf-ldtype \
+	conf-systype ctxt/bindir.c ctxt/bindir.o ctxt/ctxt.a ctxt/dlibdir.c \
+	ctxt/dlibdir.o ctxt/incdir.c ctxt/incdir.o ctxt/leapsec.c \
+	ctxt/leapsec.o ctxt/repos.c ctxt/repos.o ctxt/slibdir.c \
+	ctxt/slibdir.o ctxt/version.c ctxt/version.o deinstaller \
+	deinstaller.o inst-check inst-check.o inst-copy inst-copy.o inst-dir \
+	inst-dir.o inst-link inst-link.o install_core.o install_error.o \
+	installer installer.o instchk instchk.o insthier.o 
+	rm -f leaps_add.o leaps_data.o leaps_free.o leaps_init.o \
+	leaps_read.o leaps_sub.o leapsecs leapsecs.a leapsecs.o mk-ctxt \
+	tai.a tai64 tai64.o tai64n tai64n.o tai64na tai64na.o tai_add.o \
+	tai_approx.o tai_diff.o tai_get.o tai_label.o tai_now.o tai_pack.o \
+	tai_set.o tai_sub.o tai_unix.o tai_unpack.o taia.a taia_add.o \
+	taia_approx.o taia_diff.o taia_fmtfrac.o taia_frac.o taia_half.o \
+	taia_label.o taia_now.o taia_pack.o taia_sub.o taia_tai.o \
+	taia_unpack.o 
 
 deinstall: deinstaller inst-check inst-copy inst-dir inst-link
 	./deinstaller
