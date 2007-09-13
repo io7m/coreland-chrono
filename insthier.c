@@ -20,6 +20,7 @@ struct install_item insthier[] = {
   {INST_COPY, "calt_scan.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "calt_tai.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "calt_utc.c", 0, ctxt_repos, 0, 0, 0644},
+  {INST_COPY, "calt_loc.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "chrono-conf.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "leaps_add.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "leaps_data.c", 0, ctxt_repos, 0, 0, 0644},

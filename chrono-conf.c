@@ -101,7 +101,7 @@ static void parse_flags(int argc, char *argv[])
   if (!argc) { usage(); exit(111); }
 
   flag = 0;
-  for (ind = 0; ind < argc; ++ind) {
+  for (ind = 0; ind < (unsigned int) argc; ++ind) {
     for (jnd = 0; jnd < sizeof(flags) / sizeof(flags[0]); ++jnd) {
       if (str_diff(argv[ind], flags[jnd].flag) == 0) {
         flag |= flags[jnd].val;

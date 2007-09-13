@@ -44,7 +44,7 @@ int main(void)
       if (caldate_scan(s, &cd)) {
         tai.n = (caldate_mjd(&cd) + 1) * TAI_SECS_PER_DAY + 4611686014920671114ULL + leapsecs++;
         tai_pack(ctai, &tai);
-        buffer_put(buffer1, ctai, TAI_PACK);
+        buffer_put(buffer1, (char *) ctai, TAI_PACK);
       }
   }
  

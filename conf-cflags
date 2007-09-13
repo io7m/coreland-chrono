@@ -1,1 +1,1 @@
--g -W -Wall -pedantic -std=c99
+-g -O2 -W -Wall -Werror -pedantic-errors -std=c99 -Wno-unused-parameter
