@@ -10,7 +10,7 @@ void caltime_tai(const struct caltime *ct, struct tai *t)
   int64 day;
   int64 s;
 
-  day = caldate_mjd(&cd->date);
+  day = caldate_mjd(&ct->date);
 
   s = ct->hour * 60 + ct->minute;
   s = (s - ct->offset) * 60 + ct->second;
