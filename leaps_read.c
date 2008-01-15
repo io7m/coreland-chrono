@@ -33,7 +33,7 @@ int leapsecs_read(void)
   if (!mem) goto FAIL;
 
   size = read(fd, mem, sb.st_size);
-  if (size != sb.st_size) { dealloc(mem); goto FAIL; }
+  if (size != (unsigned long) sb.st_size) { dealloc(mem); goto FAIL; }
 
   size = sb.st_size / sizeof(struct tai);
   for (ind = 0; ind < size; ++ind) {
