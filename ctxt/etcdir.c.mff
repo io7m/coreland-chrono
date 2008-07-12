@@ -1,0 +1,3 @@
+ctxt/etcdir.c: mk-ctxt conf-etcdir
+	rm -f ctxt/etcdir.c
+	./mk-ctxt ctxt_etcdir < conf-etcdir > ctxt/etcdir.c

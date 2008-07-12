@@ -10,7 +10,7 @@ int main(void)
   struct tai t;
   uint64 tai_1970 = TAI_1970;
 
-  leapsecs_path = "../leapsecs.dat";
+  leapsecs_dir = "../";
 
   tai_set(&t, tai_1970 + 0);
   leapsecs_add(&t, 0);

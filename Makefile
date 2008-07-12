@@ -11,7 +11,7 @@ UNIT_TESTS/t_calt_scan.o UNIT_TESTS/t_leaps1 UNIT_TESTS/t_leaps1.o \
 UNIT_TESTS/t_util.o cald_fmt.o cald_frommjd.o cald_mjd.o cald_norm.o \
 cald_scan.o caldate.a calt_fmt.o calt_loc.o calt_scan.o calt_tai.o calt_utc.o \
 caltime.a chrono-conf chrono-conf.o ctxt/bindir.o ctxt/ctxt.a ctxt/dlibdir.o \
-ctxt/incdir.o ctxt/leapsec.o ctxt/repos.o ctxt/slibdir.o ctxt/version.o \
+ctxt/etcdir.o ctxt/incdir.o ctxt/repos.o ctxt/slibdir.o ctxt/version.o \
 deinstaller deinstaller.o inst-check inst-check.o inst-copy inst-copy.o \
 inst-dir inst-dir.o inst-link inst-link.o install_core.o install_error.o \
 installer installer.o instchk instchk.o insthier.o leaps_add.o leaps_data.o \
@@ -59,6 +59,9 @@ flags-integer:
 libs-integer-S:
 	@echo SYSDEPS integer-libs-S run create libs-integer-S 
 	@(cd SYSDEPS/modules/integer-libs-S && ./run)
+_sysinfo.h:
+	@echo SYSDEPS sysinfo run create _sysinfo.h 
+	@(cd SYSDEPS/modules/sysinfo && ./run)
 
 
 corelib-flags_clean:
@@ -73,6 +76,9 @@ integer-flags_clean:
 integer-libs-S_clean:
 	@echo SYSDEPS integer-libs-S clean libs-integer-S 
 	@(cd SYSDEPS/modules/integer-libs-S && ./clean)
+sysinfo_clean:
+	@echo SYSDEPS sysinfo clean _sysinfo.h 
+	@(cd SYSDEPS/modules/sysinfo && ./clean)
 
 
 sysdeps_clean:\
@@ -80,6 +86,7 @@ corelib-flags_clean \
 corelib-libs-S_clean \
 integer-flags_clean \
 integer-libs-S_clean \
+sysinfo_clean \
 
 
 # -- SYSDEPS end
@@ -237,15 +244,15 @@ cc-link chrono-conf.ld chrono-conf.o ctxt/ctxt.a
 	./cc-link chrono-conf chrono-conf.o ctxt/ctxt.a
 
 chrono-conf.o:\
-cc-compile chrono-conf.c ctxt.h
+cc-compile chrono-conf.c ctxt.h _sysinfo.h
 	./cc-compile chrono-conf.c
 
 conf-cctype:\
-conf-cc conf-cc mk-cctype
+conf-cc mk-cctype
 	./mk-cctype > conf-cctype.tmp && mv conf-cctype.tmp conf-cctype
 
 conf-ldtype:\
-conf-ld conf-ld mk-ldtype
+conf-ld mk-ldtype
 	./mk-ldtype > conf-ldtype.tmp && mv conf-ldtype.tmp conf-ldtype
 
 conf-sosuffix:\
@@ -266,9 +273,9 @@ cc-compile ctxt/bindir.c
 	./cc-compile ctxt/bindir.c
 
 ctxt/ctxt.a:\
-cc-slib ctxt/ctxt.sld ctxt/bindir.o ctxt/dlibdir.o ctxt/incdir.o ctxt/leapsec.o \
+cc-slib ctxt/ctxt.sld ctxt/bindir.o ctxt/dlibdir.o ctxt/etcdir.o ctxt/incdir.o \
 ctxt/repos.o ctxt/slibdir.o ctxt/version.o
-	./cc-slib ctxt/ctxt ctxt/bindir.o ctxt/dlibdir.o ctxt/incdir.o ctxt/leapsec.o \
+	./cc-slib ctxt/ctxt ctxt/bindir.o ctxt/dlibdir.o ctxt/etcdir.o ctxt/incdir.o \
 	ctxt/repos.o ctxt/slibdir.o ctxt/version.o
 
 # ctxt/dlibdir.c.mff
@@ -280,6 +287,15 @@ ctxt/dlibdir.o:\
 cc-compile ctxt/dlibdir.c
 	./cc-compile ctxt/dlibdir.c
 
+# ctxt/etcdir.c.mff
+ctxt/etcdir.c: mk-ctxt conf-etcdir
+	rm -f ctxt/etcdir.c
+	./mk-ctxt ctxt_etcdir < conf-etcdir > ctxt/etcdir.c
+
+ctxt/etcdir.o:\
+cc-compile ctxt/etcdir.c
+	./cc-compile ctxt/etcdir.c
+
 # ctxt/incdir.c.mff
 ctxt/incdir.c: mk-ctxt conf-incdir
 	rm -f ctxt/incdir.c
@@ -288,15 +304,6 @@ ctxt/incdir.c: mk-ctxt conf-incdir
 ctxt/incdir.o:\
 cc-compile ctxt/incdir.c
 	./cc-compile ctxt/incdir.c
-
-# ctxt/leapsec.c.mff
-ctxt/leapsec.c: mk-ctxt conf-leapsec
-	rm -f ctxt/leapsec.c
-	./mk-ctxt ctxt_leapsec < conf-leapsec > ctxt/leapsec.c
-
-ctxt/leapsec.o:\
-cc-compile ctxt/leapsec.c
-	./cc-compile ctxt/leapsec.c
 
 # ctxt/repos.c.mff
 ctxt/repos.c: mk-ctxt conf-repos
@@ -429,9 +436,9 @@ cc-link leapsecs.ld leapsecs.o caldate.a tai.a
 
 leapsecs.a:\
 cc-slib leapsecs.sld leaps_add.o leaps_data.o leaps_free.o leaps_init.o \
-leaps_read.o leaps_sub.o ctxt/leapsec.o
+leaps_read.o leaps_sub.o ctxt/etcdir.o
 	./cc-slib leapsecs leaps_add.o leaps_data.o leaps_free.o leaps_init.o \
-	leaps_read.o leaps_sub.o ctxt/leapsec.o
+	leaps_read.o leaps_sub.o ctxt/etcdir.o
 
 leapsecs.h:\
 tai.h
@@ -603,8 +610,8 @@ obj_clean:
 	UNIT_TESTS/t_util.o cald_fmt.o cald_frommjd.o cald_mjd.o cald_norm.o \
 	cald_scan.o caldate.a calt_fmt.o calt_loc.o calt_scan.o calt_tai.o calt_utc.o \
 	caltime.a chrono-conf chrono-conf.o ctxt/bindir.c ctxt/bindir.o ctxt/ctxt.a \
-	ctxt/dlibdir.c ctxt/dlibdir.o ctxt/incdir.c ctxt/incdir.o ctxt/leapsec.c \
-	ctxt/leapsec.o ctxt/repos.c ctxt/repos.o ctxt/slibdir.c ctxt/slibdir.o \
+	ctxt/dlibdir.c ctxt/dlibdir.o ctxt/etcdir.c ctxt/etcdir.o ctxt/incdir.c \
+	ctxt/incdir.o ctxt/repos.c ctxt/repos.o ctxt/slibdir.c ctxt/slibdir.o \
 	ctxt/version.c ctxt/version.o deinstaller deinstaller.o inst-check inst-check.o \
 	inst-copy inst-copy.o inst-dir inst-dir.o inst-link inst-link.o install_core.o \
 	install_error.o installer installer.o instchk instchk.o insthier.o leaps_add.o \

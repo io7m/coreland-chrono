@@ -1,2 +1,5 @@
 20070527 version: chrono 0.1
 20080115 code: updated inst-check.c
+20080712 code: use conf-etcdir instead of conf-leapsec.
+20080712 code: added sysinfo.
+20080712 code: install leapsecs.txt for documentation purposes.

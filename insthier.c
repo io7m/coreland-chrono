@@ -5,11 +5,13 @@
 
 struct install_item insthier[] = {
   {INST_MKDIR, 0, 0, ctxt_bindir, 0, 0, 0755},
+  {INST_MKDIR, 0, 0, ctxt_etcdir, 0, 0, 0755},
   {INST_MKDIR, 0, 0, ctxt_incdir, 0, 0, 0755},
   {INST_MKDIR, 0, 0, ctxt_dlibdir, 0, 0, 0755},
   {INST_MKDIR, 0, 0, ctxt_slibdir, 0, 0, 0755},
   {INST_MKDIR, 0, 0, ctxt_repos, 0, 0, 0755},
-  {INST_COPY, "leapsecs.dat", 0, ctxt_leapsec, 0, 0, 0644},
+  {INST_COPY, "leapsecs.dat", 0, ctxt_etcdir, 0, 0, 0644},
+  {INST_COPY, "leapsecs.txt", 0, ctxt_etcdir, 0, 0, 0644},
 
   {INST_COPY, "cald_fmt.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "cald_frommjd.c", 0, ctxt_repos, 0, 0, 0644},

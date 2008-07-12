@@ -9,6 +9,6 @@ int leapsecs_sub(struct tai *);
 void leapsecs_add(struct tai *, int);
 void leapsecs_free(void);
 
-extern const char *leapsecs_path;
+extern const char *leapsecs_dir;
 
 #endif

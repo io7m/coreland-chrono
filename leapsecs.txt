@@ -1,4 +1,6 @@
 #
+# This file is compiled by 'leapsecs'. It is not read directly.
+#
 # Dates must be listed in sorted order.
 # + means a positive leap second, inserting 23:59:60 UTC.
 # - means a negative leap second, skipping 23:59:59 UTC.
