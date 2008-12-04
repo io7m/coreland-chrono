@@ -1,29 +1,24 @@
-/* $Rev: 1800 $ */
-
 #include "ctxt.h"
 #include "install.h"
 
 struct install_item insthier[] = {
   {INST_MKDIR, 0, 0, ctxt_bindir, 0, 0, 0755},
-  {INST_MKDIR, 0, 0, ctxt_etcdir, 0, 0, 0755},
   {INST_MKDIR, 0, 0, ctxt_incdir, 0, 0, 0755},
   {INST_MKDIR, 0, 0, ctxt_dlibdir, 0, 0, 0755},
   {INST_MKDIR, 0, 0, ctxt_slibdir, 0, 0, 0755},
   {INST_MKDIR, 0, 0, ctxt_repos, 0, 0, 0755},
-  {INST_COPY, "leapsecs.dat", 0, ctxt_etcdir, 0, 0, 0644},
-  {INST_COPY, "leapsecs.txt", 0, ctxt_etcdir, 0, 0, 0644},
-
   {INST_COPY, "cald_fmt.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "cald_frommjd.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "cald_mjd.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "cald_norm.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "cald_scan.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "calt_fmt.c", 0, ctxt_repos, 0, 0, 0644},
+  {INST_COPY, "calt_loc.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "calt_scan.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "calt_tai.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "calt_utc.c", 0, ctxt_repos, 0, 0, 0644},
-  {INST_COPY, "calt_loc.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "chrono-conf.c", 0, ctxt_repos, 0, 0, 0644},
+  {INST_COPY, "generic-conf.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "leaps_add.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "leaps_data.c", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "leaps_free.c", 0, ctxt_repos, 0, 0, 0644},
@@ -78,14 +73,14 @@ struct install_item insthier[] = {
   {INST_COPY, "taia.sld", 0, ctxt_repos, 0, 0, 0644},
   {INST_COPY, "taia.a", "libtaia.a", ctxt_slibdir, 0, 0, 0644},
   {INST_COPY, "chrono-conf.ld", 0, ctxt_repos, 0, 0, 0644},
-  {INST_COPY, "chrono-conf", 0, ctxt_bindir, 0, 0, 0755},
+  {INST_COPY_EXEC, "chrono-conf", 0, ctxt_bindir, 0, 0, 0755},
   {INST_COPY, "leapsecs.ld", 0, ctxt_repos, 0, 0, 0644},
-  {INST_COPY, "leapsecs", 0, ctxt_bindir, 0, 0, 0755},
+  {INST_COPY_EXEC, "leapsecs", 0, ctxt_bindir, 0, 0, 0755},
   {INST_COPY, "tai64.ld", 0, ctxt_repos, 0, 0, 0644},
-  {INST_COPY, "tai64", 0, ctxt_bindir, 0, 0, 0755},
+  {INST_COPY_EXEC, "tai64", 0, ctxt_bindir, 0, 0, 0755},
   {INST_COPY, "tai64n.ld", 0, ctxt_repos, 0, 0, 0644},
-  {INST_COPY, "tai64n", 0, ctxt_bindir, 0, 0, 0755},
+  {INST_COPY_EXEC, "tai64n", 0, ctxt_bindir, 0, 0, 0755},
   {INST_COPY, "tai64na.ld", 0, ctxt_repos, 0, 0, 0644},
-  {INST_COPY, "tai64na", 0, ctxt_bindir, 0, 0, 0755},
+  {INST_COPY_EXEC, "tai64na", 0, ctxt_bindir, 0, 0, 0755},
 };
 unsigned long insthier_len = sizeof(insthier) / sizeof(struct install_item);
