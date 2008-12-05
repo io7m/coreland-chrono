@@ -22,21 +22,21 @@ taia_approx.o taia_diff.o taia_fmtfrac.o taia_frac.o taia_half.o taia_label.o \
 taia_now.o taia_pack.o taia_sub.o taia_tai.o taia_unpack.o
 
 # Mkf-deinstall
-deinstall: deinstaller inst-check inst-copy inst-dir inst-link
+deinstall: deinstaller conf-sosuffix
 	./deinstaller
-deinstall-dryrun: deinstaller inst-check inst-copy inst-dir inst-link
+deinstall-dryrun: deinstaller conf-sosuffix
 	./deinstaller dryrun
 
 # Mkf-install
-install: installer inst-check inst-copy inst-dir inst-link postinstall
+install: installer postinstall conf-sosuffix
 	./installer
 	./postinstall
 
-install-dryrun: installer inst-check inst-copy inst-dir inst-link
+install-dryrun: installer conf-sosuffix
 	./installer dryrun
 
 # Mkf-instchk
-install-check: instchk inst-check
+install-check: instchk conf-sosuffix
 	./instchk
 
 # Mkf-test
