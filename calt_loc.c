@@ -23,7 +23,7 @@ void caltime_local(struct caltime *ct, const struct tai *t, int *wday, int *yday
   ct->offset = tm->tm_gmtoff / 60;
 #elif SD_TIMEZONE == SD_TIMEZONE_GLOBAL
   ct->offset = timezone / 60;
-#elif SD_TIMEZONE == SD_TIMEZONE_NULL
+#else
   ct->offset = 0;
 #endif
 
