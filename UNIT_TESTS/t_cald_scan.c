@@ -9,7 +9,7 @@ static const struct {
   const char *s;
 } tests[] = {
   { { 0, 0, 0 }, 7, "0-00-00" },
-  { { 0xffffffff, 0xffff, 0xffff }, 22, "4294967295-65535-65535" }, 
+  { { (long) 0xffffffff, 0xffff, 0xffff }, 22, "4294967295-65535-65535" }, 
   { { 0, 1, 1 }, 7, "0-01-01" },
   { { 1, 1, 1 }, 7, "1-01-01" },
 

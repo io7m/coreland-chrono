@@ -6,3 +6,5 @@
 20081204 code: updated installer.
 20090308 code: updated installer.
 20090308 code: updated sysdeps.
+20090403 code: restructure for Sun C semantic checks (unreachable).
+20090403 code: explicitly cast to long for unit test.

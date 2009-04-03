@@ -8,7 +8,6 @@ void done(void)
 {
   if (buffer_flush(buffer1) == -1)
     syserr_die1sys(112, "tai64: write: ");
-  _exit(0);
 }
 
 int main(void)
@@ -19,7 +18,7 @@ int main(void)
 
   stamp[0] = '@';
   for (;;) {
-    if (buffer_get(buffer0, &ch, 1) != 1) done();
+    if (buffer_get(buffer0, &ch, 1) != 1) { done(); goto FINISH; }
     tai_now(&tai);
     tai_tai64(stamp + 1, &tai);
 
@@ -29,8 +28,10 @@ int main(void)
     for (;;) {
       buffer_put(buffer1, &ch, 1);
       if (ch == '\n') break;
-      if (buffer_get(buffer0, &ch, 1) != 1) done();
+      if (buffer_get(buffer0, &ch, 1) != 1) { done(); goto FINISH; }
     }
   }
+
+  FINISH:
   return 0;
 }
