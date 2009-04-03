@@ -1,0 +1,44 @@
+#!/bin/sh
+
+cleanup()
+{
+  rm -f try_global1.o try_global1 try_struct1.o try_struct1
+}
+
+fout="$1"
+sysdeps="$2"
+
+${SYSDEP_CC} ${SYSDEP_CFLAGS} -c -o try_global1.o try_global1.c >/dev/null 2>&1
+${SYSDEP_LD} -o try_global1 try_global1.o >/dev/null 2>&1
+if [ $? -eq 0 ]
+then
+  where="SD_TIMEZONE_GLOBAL"
+  sd_where="global"
+else
+  ${SYSDEP_CC} ${SYSDEP_CFLAGS} -c -o try_struct1.o try_struct1.c >/dev/null 2>&1
+  ${SYSDEP_LD} -o try_struct1 try_struct1.o >/dev/null 2>&1
+  if [ $? -eq 0 ]
+  then
+    where="SD_TIMEZONE_STRUCT_TM"
+    sd_where="struct tm"
+  else
+    where="SD_TIMEZONE_NONE"
+    sd_where="none"
+  fi
+fi
+
+cat >> "${fout}" <<EOF
+#ifndef _SD_TIMEZONE_H
+#define _SD_TIMEZONE_H
+
+#define SD_TIMEZONE_NONE      0x0000
+#define SD_TIMEZONE_GLOBAL    0x0001
+#define SD_TIMEZONE_STRUCT_TM 0x0002
+
+#define SD_TIMEZONE ${where}
+
+#endif
+EOF
+
+echo "sd-timezone: ${sd_where}" >> "${sysdeps}"
+cleanup

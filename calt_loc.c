@@ -1,4 +1,5 @@
 #include <integer/int64.h>
+#include "_sd_timezone.h"
 
 #include "tai.h"
 #include "leapsecs.h"
@@ -16,7 +17,16 @@ void caltime_local(struct caltime *ct, const struct tai *t, int *wday, int *yday
   time_t tt = (time_t) u;
 
   tm = localtime(&tt);
+
+  /* local timezone offset */
+#if SD_TIMEZONE == SD_TIMEZONE_STRUCT_TM
   ct->offset = tm->tm_gmtoff / 60;
+#elif SD_TIMEZONE == SD_TIMEZONE_GLOBAL
+  ct->offset = timezone / 60;
+#elif SD_TIMEZONE == SD_TIMEZONE_NULL
+  ct->offset = 0;
+#endif
+
   ct->second = tm->tm_sec;
   ct->minute = tm->tm_min;
   ct->hour = tm->tm_hour;

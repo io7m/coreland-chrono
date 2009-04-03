@@ -58,6 +58,9 @@ flags-integer:
 libs-integer-S:
 	@echo SYSDEPS integer-libs-S run create libs-integer-S 
 	@(cd SYSDEPS/modules/integer-libs-S && ./run)
+_sd_timezone.h:
+	@echo SYSDEPS sd-timezone run create _sd_timezone.h 
+	@(cd SYSDEPS/modules/sd-timezone && ./run)
 _sysinfo.h:
 	@echo SYSDEPS sysinfo run create _sysinfo.h 
 	@(cd SYSDEPS/modules/sysinfo && ./run)
@@ -75,6 +78,9 @@ integer-flags_clean:
 integer-libs-S_clean:
 	@echo SYSDEPS integer-libs-S clean libs-integer-S 
 	@(cd SYSDEPS/modules/integer-libs-S && ./clean)
+sd-timezone_clean:
+	@echo SYSDEPS sd-timezone clean _sd_timezone.h 
+	@(cd SYSDEPS/modules/sd-timezone && ./clean)
 sysinfo_clean:
 	@echo SYSDEPS sysinfo clean _sysinfo.h 
 	@(cd SYSDEPS/modules/sysinfo && ./clean)
@@ -85,6 +91,7 @@ corelib-flags_clean \
 corelib-libs-S_clean \
 integer-flags_clean \
 integer-libs-S_clean \
+sd-timezone_clean \
 sysinfo_clean \
 
 
@@ -205,7 +212,7 @@ cc-compile calt_fmt.c caldate.h caltime.h
 	./cc-compile calt_fmt.c
 
 calt_loc.o:\
-cc-compile calt_loc.c tai.h leapsecs.h caldate.h caltime.h
+cc-compile calt_loc.c _sd_timezone.h tai.h leapsecs.h caldate.h caltime.h
 	./cc-compile calt_loc.c
 
 calt_scan.o:\
@@ -247,11 +254,11 @@ cc-compile chrono-conf.c ctxt.h _sysinfo.h
 	./cc-compile chrono-conf.c
 
 conf-cctype:\
-conf-cc mk-cctype
+conf-cc conf-cc mk-cctype
 	./mk-cctype > conf-cctype.tmp && mv conf-cctype.tmp conf-cctype
 
 conf-ldtype:\
-conf-ld mk-ldtype
+conf-ld conf-ld mk-ldtype
 	./mk-ldtype > conf-ldtype.tmp && mv conf-ldtype.tmp conf-ldtype
 
 conf-sosuffix:\
