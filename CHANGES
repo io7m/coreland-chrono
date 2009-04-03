@@ -8,3 +8,4 @@
 20090308 code: updated sysdeps.
 20090403 code: restructure for Sun C semantic checks (unreachable).
 20090403 code: explicitly cast to long for unit test.
+20090403 code: http://coreland.ath.cx/unix/portability/time, @20090403.
