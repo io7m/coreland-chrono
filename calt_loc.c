@@ -31,7 +31,7 @@ void caltime_local(struct caltime *ct, const struct tai *t, int *wday, int *yday
   ct->minute = tm->tm_min;
   ct->hour = tm->tm_hour;
   ct->date.year = tm->tm_year + 1900;
-  ct->date.month = tm->tm_mon;
+  ct->date.month = tm->tm_mon + 1;
   ct->date.day = tm->tm_mday;
 
   if (wday) *wday = tm->tm_wday;
